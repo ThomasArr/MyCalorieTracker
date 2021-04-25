@@ -1,21 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import {Component} from 'react';
+import {TabNavigator} from "./navigation/NavigationTab";
+import {Provider} from 'mobx-react';
+import AppStore from "./store/AppStore"
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import AlimentDataService from "./API/Services/aliment.service.js"
+
+import {aliment_sample} from "./services/aliment.model";
+
+const store = new AppStore()
+
+class App extends Component {
+
+
+    init_database() {
+
+        //AlimentDataService.create({name: "dauphin", protein: "", lipid: "", carbohydrate : "", kcal: "", categorie: "" })
+        /*
+        aliment_sample.map(aliment => {
+            AlimentDataService.create(aliment)
+        })*/
+
+    }
+
+    componentDidMount() {
+        this.init_database()
+        store.load_datas()
+    }
+
+    render() {
+        return (
+            <Provider store={store}>
+                <TabNavigator />
+            </Provider>
+
+        );
+    }
+
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
